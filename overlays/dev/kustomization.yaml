@@ -5,6 +5,21 @@ resources:
   - ../../base
 patches:
   - path: replica-patch.yaml
+  - path: args-api.yaml
+    target:
+      kind: Deployment
+      name: api-deployment
+  - path: args-frontend.yaml
+    target:
+      kind: Deployment
+      name: frontend-deployment
+images:
+  - name: 192.168.159.129/devsecops-portfolio/api
+    newName: hashicorp/http-echo
+    newTag: "1.0"
+  - name: 192.168.159.129/devsecops-portfolio/frontend
+    newName: hashicorp/http-echo
+    newTag: "1.0"
 configMapGenerator:
   - name: api-config
     literals:
