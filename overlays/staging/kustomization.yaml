@@ -16,10 +16,10 @@ patches:
 images:
   - name: 192.168.159.129/devsecops-portfolio/api
     newName: hashicorp/http-echo
-    newTag: "1.0"
+    digest: sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
   - name: 192.168.159.129/devsecops-portfolio/frontend
     newName: hashicorp/http-echo
-    newTag: "1.0"
+    digest: sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
 configMapGenerator:
   - name: api-config
     literals:
