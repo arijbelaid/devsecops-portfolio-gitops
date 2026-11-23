@@ -5,21 +5,11 @@ resources:
   - ../../base
 patches:
   - path: replica-patch.yaml
-  - path: args-api.yaml
-    target:
-      kind: Deployment
-      name: api-deployment
-  - path: args-frontend.yaml
-    target:
-      kind: Deployment
-      name: frontend-deployment
 images:
   - name: 192.168.159.129/devsecops-portfolio/api
-    newName: hashicorp/http-echo
-    digest: sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+    digest: sha256:d17e35dc0357a93762b1c86b0048185931c1d8da24143d8298134155897cec69
   - name: 192.168.159.129/devsecops-portfolio/frontend
-    newName: hashicorp/http-echo
-    digest: sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+    digest: sha256:e01769541ceb83176c69bc1c1502edb8ade43ac7d87494dbae27193a12e800d6
 configMapGenerator:
   - name: api-config
     literals:
