@@ -5,7 +5,7 @@ resources:
   - ../../base
 patches:
   - path: replica-patch.yaml
-  - path: ../../base/frontend-nginx-patch.yaml
+  - path: frontend-nginx-patch.yaml
     target:
       kind: Deployment
       name: frontend-deployment
