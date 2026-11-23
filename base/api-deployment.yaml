@@ -13,13 +13,15 @@ spec:
         app: api
     spec:
       serviceAccountName: app-service-account
+      imagePullSecrets:
+        - name: harbor-pull-secret
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         fsGroup: 1000
       containers:
       - name: api
-        image: harbor.votre-domaine.com/devsecops-portfolio/api:1.0.0
+        image: 192.168.159.129/devsecops-portfolio/api:1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
