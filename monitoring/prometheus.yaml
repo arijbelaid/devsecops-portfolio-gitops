@@ -42,6 +42,9 @@ data:
   prometheus.yml: |
     global:
       scrape_interval: 30s
+    rule_files:
+      - /etc/prometheus/slo-rules.yml
+
     scrape_configs:
       - job_name: prometheus
         static_configs:
@@ -94,6 +97,21 @@ data:
             target_label: namespace
           - source_labels: [__meta_kubernetes_pod_name]
             target_label: pod
+  slo-rules.yml: |
+    groups:
+      - name: slo-api
+        rules:
+          - alert: ApiAvailabilitySLOViolated
+            expr: |
+              100 * (sum(increase(http_requests_total{route="/api/contact",status!~"5.."}[1h])) or vector(0)) / sum(increase(http_requests_total{route="/api/contact"}[1h])) < 99
+            for: 1m
+            labels:
+              severity: critical
+              slo: availability
+            annotations:
+              summary: "SLO de disponibilite non respecte sur /api/contact"
+              runbook_url: "https://github.com/arijbelaid/devsecops-portfolio-gitops/blob/main/monitoring/runbook-api-availability.md"
+              description: "Le SLI sur 1 h est de {{ $value | printf \"%.2f\" }} %, sous l'objectif de 99 %."
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -120,6 +138,7 @@ spec:
           image: prom/prometheus:v2.55.1
           args:
             - --config.file=/etc/prometheus/prometheus.yml
+            - --web.enable-lifecycle
             - --storage.tsdb.path=/prometheus
             - --storage.tsdb.retention.time=2d
           ports:
