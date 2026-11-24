@@ -30,6 +30,7 @@ spec:
                 printf '%s' "$POSTGRES_PASSWORD" > /tmp/pw
                 initdb -D "$PGDATA" -U portfolio -E UTF8 --pwfile=/tmp/pw --auth-local=trust --auth-host=scram-sha-256
                 rm -f /tmp/pw
+                echo "host all all all scram-sha-256" >> "$PGDATA/pg_hba.conf"
                 echo 'CREATE DATABASE portfolio;' | postgres --single -D "$PGDATA" postgres
               fi
               exec postgres -D "$PGDATA" -c listen_addresses='*' -c unix_socket_directories=/tmp

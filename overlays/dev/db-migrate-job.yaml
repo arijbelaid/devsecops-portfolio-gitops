@@ -6,7 +6,8 @@ metadata:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
-  backoffLimit: 6
+  backoffLimit: 3
+  activeDeadlineSeconds: 600
   template:
     metadata:
       labels:
@@ -20,7 +21,21 @@ spec:
       containers:
         - name: migrate
           image: 192.168.159.129/devsecops-portfolio/api
-          command: ["npx", "--yes", "prisma@5.22.0", "migrate", "deploy"]
+          command: ["sh", "-c"]
+          args:
+            - |
+              npx --yes prisma@5.22.0 migrate deploy > /tmp/migrate.log 2>&1 &
+              i=0
+              while [ "$i" -lt 90 ]; do
+                if grep -qE "successfully applied|No pending migrations" /tmp/migrate.log; then
+                  cat /tmp/migrate.log; exit 0
+                fi
+                if grep -qE "Error: P[0-9]+" /tmp/migrate.log; then
+                  cat /tmp/migrate.log; exit 1
+                fi
+                i=$((i+1)); sleep 2
+              done
+              cat /tmp/migrate.log; exit 1
           env:
             - name: HOME
               value: /tmp
