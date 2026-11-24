@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: devsecops-dev
 resources:
+  - frontend-nodeport.yaml
   - db-migrate-job.yaml
   - ../../base
 patches:
