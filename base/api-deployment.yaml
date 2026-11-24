@@ -26,6 +26,14 @@ spec:
         ports:
         - containerPort: 5000
         env:
+        - name: AWS_ENDPOINT_URL
+          value: "http://192.168.159.129:4566"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          value: "test"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "test"
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: "http://tempo.monitoring.svc.cluster.local:4318"
         - name: OTEL_SERVICE_NAME
