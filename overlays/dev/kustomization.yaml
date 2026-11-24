@@ -2,9 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: devsecops-dev
 resources:
+  - db-migrate-job.yaml
   - ../../base
 patches:
   - path: replica-patch.yaml
+  - path: api-db-patch.yaml
   - path: frontend-nginx-patch.yaml
     target:
       kind: Deployment
