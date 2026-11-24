@@ -26,6 +26,10 @@ spec:
         ports:
         - containerPort: 5000
         env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://tempo.monitoring.svc.cluster.local:4318"
+        - name: OTEL_SERVICE_NAME
+          value: "portfolio-api"
         - name: API_URL
           valueFrom:
             configMapKeyRef:
