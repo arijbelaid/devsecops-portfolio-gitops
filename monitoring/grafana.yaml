@@ -8,11 +8,38 @@ data:
     apiVersion: 1
     datasources:
       - name: Prometheus
+        uid: prometheus
         type: prometheus
         access: proxy
         url: http://prometheus.monitoring.svc.cluster.local:9090
         isDefault: true
----
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki.monitoring.svc.cluster.local:3100
+        jsonData:
+          derivedFields:
+            - name: TraceID
+              matcherRegex: '"correlationId":"(\w+)"'
+              url: '$${__value.raw}'
+              datasourceUid: tempo
+            - name: TraceID-cid
+              matcherRegex: 'cid=(\w+)'
+              url: '$${__value.raw}'
+              datasourceUid: tempo
+      - name: Tempo
+        uid: tempo
+        type: tempo
+        access: proxy
+        url: http://tempo.monitoring.svc.cluster.local:3200
+        jsonData:
+          tracesToLogsV2:
+            datasourceUid: loki
+            spanStartTimeShift: '-5m'
+            spanEndTimeShift: '5m'
+            customQuery: true
+            query: '{namespace="devsecops-dev"} |= "$${__trace.traceId}"'---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
