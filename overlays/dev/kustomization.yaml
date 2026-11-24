@@ -13,9 +13,9 @@ patches:
       name: frontend-deployment
 images:
   - name: 192.168.159.129/devsecops-portfolio/api
-    digest: sha256:af50ebe2f12e47d78b77e58823a77bdf547259b7bc987efa76c32a0c8abd801c
+    digest: sha256:8ebe738ad4b7482e5d2727d2a4982e79ea0510a413bbf69626592aabe1838a24
   - name: 192.168.159.129/devsecops-portfolio/frontend
-    digest: sha256:bdd049e8224a8f2ed54c0967eb23c721c5b8f2eff50f4bc29f68a1965321529d
+    digest: sha256:6e8d81bd530deb139931212977bd33f3c1162b3c9506c5b411fa4f80620f80a6
 configMapGenerator:
   - name: api-config
     literals:
